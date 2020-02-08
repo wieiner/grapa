@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28822.285
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "grcalcul", "grcalcul\grcalcul.vcxproj", "{CAAB0E3A-A828-4551-B3EA-9C4A0665CD3C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CAAB0E3A-A828-4551-B3EA-9C4A0665CD3C}.Debug|x64.ActiveCfg = Debug|x64
+		{CAAB0E3A-A828-4551-B3EA-9C4A0665CD3C}.Debug|x64.Build.0 = Debug|x64
+		{CAAB0E3A-A828-4551-B3EA-9C4A0665CD3C}.Debug|x86.ActiveCfg = Debug|Win32
+		{CAAB0E3A-A828-4551-B3EA-9C4A0665CD3C}.Debug|x86.Build.0 = Debug|Win32
+		{CAAB0E3A-A828-4551-B3EA-9C4A0665CD3C}.Release|x64.ActiveCfg = Release|x64
+		{CAAB0E3A-A828-4551-B3EA-9C4A0665CD3C}.Release|x64.Build.0 = Release|x64
+		{CAAB0E3A-A828-4551-B3EA-9C4A0665CD3C}.Release|x86.ActiveCfg = Release|Win32
+		{CAAB0E3A-A828-4551-B3EA-9C4A0665CD3C}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {65AF1F4E-9CCD-46E8-8C86-479FCBA4203D}
+	EndGlobalSection
+EndGlobal
