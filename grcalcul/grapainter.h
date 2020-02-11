@@ -2,12 +2,84 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <array>
 #include <string>
 
 using namespace std;
 
 
+
 enum CalcHedraTypes {cTetraHedra, cOctaHedra, cPentaHedra, cGrawitaHedra, cMaxHedra};
+extern array<string, cMaxHedra> sCalcHedraTypes;
+
+void current_ini_creator(CalcHedraTypes ect, int parts, int threads);
+
+class logini
+{
+public:
+    fstream flog;
+    string fname[2];
+    long long beg_inclusive, current_position, end_inclusive;
+    logini() : beg_inclusive(0), current_position(0), end_inclusive(0), fname{ "current", "log_ini" } {}
+    void inite(int idelta) {
+
+        beg_inclusive = idelta;
+        current_position = idelta;
+        end_inclusive = 0;
+
+        try {
+            flog.open(fname[0]+to_string(idelta)+".ini", std::fstream::in);
+            flog >> beg_inclusive;
+            flog >> current_position;
+            flog >> end_inclusive;
+            flog.close();
+        }
+        catch (exception &e)
+        {
+            flog.close();
+            beg_inclusive = idelta;
+            current_position = idelta;
+            end_inclusive = 0;
+            cout << endl << "logini::inite() : error parsing ini filename (" << fname[0] + to_string(idelta) + ".ini" << ")" << endl;
+        }
+    }
+
+    void autosave(int idelta)
+    {
+        //try to save log ini
+        try {
+            flog.open(fname[1] + to_string(idelta) + ".txt", std::fstream::out | std::fstream::app);
+            flog << "=====cutline========== thread #" << idelta << "======cutline========" << endl;
+            flog << "begin interval position" << endl << beg_inclusive << endl;
+            flog << "current pos" << endl << current_position << endl;
+            flog << "end interval pos" << endl << end_inclusive << endl;
+            flog.close();
+        }
+        catch (exception & e)
+        {
+            flog.close();
+            cout << endl << "logini::autosave() : error saving old state : filename (" << fname[1] + to_string(idelta) + ".txt" << ")" << endl;
+        }
+
+
+        //try to save current autosave point
+        try {
+            flog.open(fname[0] + to_string(idelta) + ".ini", std::fstream::out);
+            flog << beg_inclusive << endl;
+            flog << current_position << endl;
+            flog << end_inclusive << endl;
+            flog.close();
+        }
+        catch (exception & e)
+        {
+            flog.close();
+            cout << endl << "logini::autosave() : error saving old state : filename (" << fname[0] + to_string(idelta) + ".ini" << ")" << endl;
+        }        
+
+    }
+
+};
+
 class cgrobj
 {
 public:
@@ -26,12 +98,14 @@ class grapainter
 {
 
 public:
-    fstream fs;
+    logini logilog;
+    fstream fs_results;
     int        numABC;
     vector<string>     namesABC;
     vector<cgrobj>       grobj;
     vector<cgralinks>   gralinks;
     void tetrahedra() {
+        crnt_type = CalcHedraTypes::cTetraHedra;
         namesABC.clear();   namesABC.push_back("T"); namesABC.push_back("F"); namesABC.push_back("U");
         numABC=namesABC.size();
         cgrobj tmp;
@@ -92,6 +166,7 @@ public:
 
     };
     void octahedra() {
+        crnt_type = CalcHedraTypes::cOctaHedra;
         namesABC.clear(); namesABC.push_back("N"); namesABC.push_back("T"); namesABC.push_back("F"); namesABC.push_back("U");
         numABC = namesABC.size();
         cgrobj tmp;
@@ -197,6 +272,7 @@ public:
 
     };
     void pentahedra() {
+         crnt_type = CalcHedraTypes::cPentaHedra;
          namesABC.clear(); namesABC.push_back("V"); namesABC.push_back("N"); namesABC.push_back("T"); namesABC.push_back("F"); namesABC.push_back("U");
          numABC = namesABC.size();
         cgrobj tmp;
@@ -320,6 +396,7 @@ public:
 
     };
     void grawitahedra() {
+        crnt_type = CalcHedraTypes::cGrawitaHedra;
         namesABC.clear(); namesABC.push_back("M"); namesABC.push_back("V"); namesABC.push_back("N"); namesABC.push_back("T"); namesABC.push_back("F"); namesABC.push_back("U");
         numABC = namesABC.size();
         cgrobj tmp;
@@ -466,5 +543,30 @@ public:
     void calculate(int idelta, int igap);
     int calculate_mthrded(CalcHedraTypes ect);
     bool proof();
+    CalcHedraTypes crnt_type;
+
+    void ahedrize_it(CalcHedraTypes ect)
+    {
+        switch (ect)
+        {
+        case cTetraHedra:
+            tetrahedra();
+            break;
+
+        case cOctaHedra:
+            octahedra();
+            break;
+
+        case cPentaHedra:
+            pentahedra();
+            break;
+
+        case cGrawitaHedra:
+            grawitahedra();
+            break;
+        }
+
+    }
+
 };
 
